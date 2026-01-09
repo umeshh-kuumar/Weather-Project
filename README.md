@@ -1,16 +1,56 @@
-# React + Vite
+# Weather Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A beautiful weather application built with React and Vite that displays real-time weather information for any city.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🔍 Search for weather by city name
+- 🌡️ Real-time temperature display
+- 💧 Humidity information
+- 💨 Wind speed data
+- 🎨 Dynamic weather icons based on conditions
+- 📱 Responsive design
 
-## React Compiler
+## Setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Get Your API Key
 
-## Expanding the ESLint configuration
+1. Visit [OpenWeatherMap](https://openweathermap.org/api)
+2. Sign up for a free account
+3. Navigate to API keys section
+4. Copy your API key
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 2. Configure Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+VITE_WEATHER_API_KEY=your_api_key_here
+```
+
+Replace `your_api_key_here` with your actual API key from OpenWeatherMap.
+
+### 3. Install Dependencies
+
+```bash
+npm install
+```
+
+### 4. Run the Development Server
+
+```bash
+npm run dev
+```
+
+## Usage
+
+1. Enter a city name in the search bar
+2. Press Enter or click the search icon
+3. View the current weather information for that city
+
+## Technologies Used
+
+- React
+- Vite
+- Tailwind CSS
+- OpenWeatherMap API
