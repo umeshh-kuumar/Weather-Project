@@ -1,10 +1,49 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import searchIcon from '../assets/search.png'
 import cloudIcon from '../assets/cloud.png'
 import humidity from '../assets/humidity.png'
 import wind from '../assets/wind.png'
 
 const weather = () => {
+    const [city, setCity] = useState('')
+    const [weatherData, setWeatherData] = useState('')
+    const [loading, setLoading] = useState(false)
+
+    const search = async (cityName) => {
+        setLoading(true);
+        try {
+            const geoResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${cityName}&count=1&language=en&format=json`)
+
+            const geoData = await geoResponse.json();
+
+
+            if (geoData.results && geoData.results.length > 0) {
+                const {latitude, longitude, name} = geoData.results[0];
+
+                const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m&timezone=auto`)
+
+                const weather = await weatherResponse.json();
+
+
+                setWeatherData({
+                    name: name,
+                    temp: weather.current.temperature_2m,
+                    humidity: weather.current.relative_humidity_2m,
+                    windSpeed: weather.current.wind_speed_10m
+                })
+            }
+        }
+        catch (error) {
+            console.log("Error fetching weather data:", error);
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+    useEffect(() => {
+        search('New York')
+    }, [])
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-blue-100">
 
