@@ -4,12 +4,13 @@ import cloudIcon from '../assets/cloud.png'
 import humidity from '../assets/humidity.png'
 import wind from '../assets/wind.png'
 
-const weather = () => {
+const Weather = () => {
     const [city, setCity] = useState('')
     const [weatherData, setWeatherData] = useState('')
     const [loading, setLoading] = useState(false)
 
     const search = async (cityName) => {
+        if (!cityName) return
         setLoading(true);
         try {
             const geoResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${cityName}&count=1&language=en&format=json`)
@@ -18,7 +19,7 @@ const weather = () => {
 
 
             if (geoData.results && geoData.results.length > 0) {
-                const {latitude, longitude, name} = geoData.results[0];
+                const { latitude, longitude, name } = geoData.results[0];
 
                 const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m&timezone=auto`)
 
@@ -41,7 +42,7 @@ const weather = () => {
         }
     }
     useEffect(() => {
-        search('New York')
+        search('delhi')
     }, [])
 
     return (
@@ -55,21 +56,26 @@ const weather = () => {
                     <input
                         type="text"
                         placeholder="Search"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
                         className="w-full bg-blue-200 text-black rounded-full px-4 py-2 pr-10 focus:outline-none"
                     />
-                    <img
-                        src={searchIcon}
-                        alt="search"
-                        className="w-5 h-5 absolute right-3 cursor-pointer"
-                    />
+                    <button onClick={()=> search(city)}
+                     className='absolute right-3 cursor-pointer'>
+                        <img
+                            src={searchIcon}
+                            alt="search"
+                            className="w-5 h-5 "
+                        />
+                    </button>
                 </div>
 
                 {/* Weather Info */}
                 <div className="flex flex-col items-center mt-6">
                     <img src={cloudIcon} alt="cloud" className="w-24 h-24 mb-2" />
 
-                    <h1 className="text-6xl font-semibold">21°C</h1>
-                    <p className="text-2xl mt-1">New York</p>
+                    <h1 className="text-6xl font-semibold">{weatherData.temp}°c</h1>
+                    <p className="text-2xl mt-1">{weatherData.name}</p>
 
                     {/* Humidity & Wind */}
                     <div className="flex justify-between w-full mt-6 px-2">
@@ -78,7 +84,7 @@ const weather = () => {
                         <div className="flex items-center gap-3">
                             <img src={humidity} className="w-5 h-5" />
                             <div>
-                                <p className="font-semibold">67%</p>
+                                <p className="font-semibold">{weatherData.humidity}%</p>
                                 <span className="text-sm">Humidity</span>
                             </div>
                         </div>
@@ -87,7 +93,7 @@ const weather = () => {
                         <div className="flex items-center gap-3">
                             <img src={wind} className="w-5 h-5" />
                             <div>
-                                <p className="font-semibold">2.06 Km/h</p>
+                                <p className="font-semibold">{weatherData.windSpeed} Km/h</p>
                                 <span className="text-sm">Wind Speed</span>
                             </div>
                         </div>
@@ -100,4 +106,4 @@ const weather = () => {
     )
 }
 
-export default weather
+export default Weather
